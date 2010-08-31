@@ -89,3 +89,10 @@
                  (outline-minor-mode)
                  (setq outline-regexp " *\\(def \\|class\\|module\\)")
                  (hide-body)))
+
+;;; yasnippet
+    (add-to-list 'load-path
+                  "~/.emacs.d/vendor/yasnippet-0.6.1c")
+    (require 'yasnippet) ;; not yasnippet-bundle
+    (yas/initialize)
+    (yas/load-directory "~/.emacs.d/vendor/yasnippet-0.6.1c/snippets")
