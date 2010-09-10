@@ -96,3 +96,10 @@
     (require 'yasnippet) ;; not yasnippet-bundle
     (yas/initialize)
     (yas/load-directory "~/.emacs.d/vendor/yasnippet-0.6.1c/snippets")
+
+;;; autotest
+(load-file "~/.emacs.d/vendor/autotest.el")
+
+;;; org-mode
+
+(setq org-log-done 'time) ;; log when tasks are marked done
