@@ -103,3 +103,13 @@
 ;;; org-mode
 
 (setq org-log-done 'time) ;; log when tasks are marked done
+
+;;; mobile org config
+
+;; Set to the location of your Org files on your local system
+(setq org-directory "~/org")
+;; Set to the name of the file where new notes will be stored
+(setq org-mobile-inbox-for-pull "~/org/inbox.org")
+;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory "~/Dropbox/MobileOrg")
+(setq org-agenda-files (quote "~/org/agendas.org"))
