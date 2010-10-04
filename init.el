@@ -100,6 +100,8 @@
 ;;; autotest
 (load-file "~/.emacs.d/vendor/autotest.el")
 
+;;; rcov
+(load-file "~/.emacs.d/vendor/rcov.el")
 ;;; org-mode
 
 (setq org-log-done 'time) ;; log when tasks are marked done
