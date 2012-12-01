@@ -97,8 +97,10 @@
     (yas/initialize)
     (yas/load-directory "~/.emacs.d/vendor/yasnippet-0.6.1c/snippets")
 
-;;; autotest
+;;; autotest & unit test integration
 (load-file "~/.emacs.d/vendor/autotest.el")
+(load-file "~/.emacs.d/vendor/unit-test.el")
+(setq autotest-use-ui t)
 
 ;;; rcov
 (load-file "~/.emacs.d/vendor/rcov.el")
@@ -114,9 +116,31 @@
 (setq org-mobile-inbox-for-pull "~/org/inbox.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/MobileOrg")
-(setq org-agenda-files (quote "~/org/agendas.org"))
+(setq org-agenda-files (list "~/tasks/sfweb.org"))
 
 ;;; mo-git-blame
 (add-to-list 'load-path "~/.emacs.d/mo-git-blame")
 (autoload 'mo-git-blame-file "mo-git-blame" nil t)
 (autoload 'mo-git-blame-current "mo-git-blame" nil t)
+
+;;; rhtml-mode
+(add-to-list 'load-path "~/.emacs.d/vendor/rhtml")
+(require 'rhtml-mode)
+(add-hook 'rhtml-mode-hook
+  	  '(Lambda () (rinari-launch)))
+(setq auto-mode-alist (cons '("\\.html.erb" . rhtml-mode) auto-mode-alist))
+
+;; magit
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/")
+(require 'magit-blame)
+(global-set-key (kbd "C-c b") 'magit-blame-mode)
+
+;; slime utf-8 support
+(setq slime-net-coding-system 'utf-8-unix)
+
+;; put an end to trailing whitespace
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(setq show-trailing-whitespace t)
+
+;; nrepl
+(require 'nrepl)
