@@ -111,17 +111,11 @@
 ;;; mobile org config
 
 ;; Set to the location of your Org files on your local system
-(setq org-directory "~/org")
+(setq org-directory "~/work/org-files")
 ;; Set to the name of the file where new notes will be stored
 (setq org-mobile-inbox-for-pull "~/org/inbox.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/MobileOrg")
-(setq org-agenda-files (list "~/tasks/sfweb.org"))
-
-;;; mo-git-blame
-(add-to-list 'load-path "~/.emacs.d/mo-git-blame")
-(autoload 'mo-git-blame-file "mo-git-blame" nil t)
-(autoload 'mo-git-blame-current "mo-git-blame" nil t)
 
 ;;; rhtml-mode
 (add-to-list 'load-path "~/.emacs.d/vendor/rhtml")
@@ -135,12 +129,66 @@
 (require 'magit-blame)
 (global-set-key (kbd "C-c b") 'magit-blame-mode)
 
-;; slime utf-8 support
-(setq slime-net-coding-system 'utf-8-unix)
-
 ;; put an end to trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq show-trailing-whitespace t)
 
+(setq org-agenda-files (list "~/tasks/sfweb.org"))
+(setq org-agenda-files (list "~/org/agendas.org" "~/work/myforex/TODO.org"))
+
+;;; erlang config
+(setq load-path (cons  "/opt/local/lib/erlang/lib/tools-2.6.5.1/emacs" load-path))
+(setq erlang-root-dir "/opt/local/lib/erlang")
+(setq exec-path (cons "/opt/local/lib/erlang/bin" exec-path))
+;;(require 'erlang-start)
+
+
+;;; clojure config
+(defun lein-swank ()
+  (interactive)
+  (let ((root (locate-dominating-file default-directory "project.clj")))
+    (when (not root)
+      (error "Not in a Leiningen project."))
+    ;; you can customize slime-port using .dir-locals.el
+    (shell-command (format "source $HOME/.bashrc && cd %s && lein swank %s &" root slime-port)
+                   "*lein-swank*")
+    (set-process-filter (get-buffer-process "*lein-swank*")
+                        (lambda (process output)
+                          (when (string-match "Connection opened on" output)
+                            (slime-connect "localhost" slime-port)
+                            (set-process-filter process nil))))
+    (message "Starting swank server...")))
+
+;; midje mode
+
+(add-to-list 'load-path "~/.emacs.d/midje-mode")
+(require 'clojure-mode)
+(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+(require 'midje-mode)
+(add-hook 'clojure-mode-hook 'midje-mode)
+
+;; slime with utf-8
+(set-language-environment "UTF-8")
+(setq slime-net-coding-system 'utf-8-unix) 
+
+;; magit
+(setq load-path (cons "/usr/local/share/emacs/site-lisp/" load-path))
+(require 'magit-blame)
+(global-set-key (kbd "C-c b") 'magit-blame-mode)
+
+;; php mode
+(require 'php-mode)
+(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+
 ;; nrepl
+(add-to-list 'load-path "~/repos/nrepl.el")
 (require 'nrepl)
+
+
+;; haskell-mode
+(load "~/repos/haskell-mode/haskell-site-file")
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+(setq haskell-program-name "/usr/local/bin/ghci")
